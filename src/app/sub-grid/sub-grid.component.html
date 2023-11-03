@@ -1,0 +1,14 @@
+<div class="main-section">
+  <div
+    class="box"
+    *ngFor="let value of boxValue; index as i"
+    (click)="boxClicked(i)"
+  >
+    <span style="position: absolute"
+      ><span class="circle small" *ngIf="this.boxValue[i] == 'O'"></span>
+      <span class="rectangle small" *ngIf="this.boxValue[i] == 'X'"></span
+    ></span>
+  </div>
+  <div class="circle" *ngIf="this.showCircle"></div>
+  <div class="rectangle" *ngIf="this.showRectangle"></div>
+</div>
