@@ -1,6 +1,7 @@
 <div class="main-section">
+  <div class="box-wrapper">
   <div
-    class="box"
+    class="box" [attr.id]="'box-' + i"
     *ngFor="let value of boxValue; index as i"
     (click)="boxClicked(i)"
   >
@@ -9,6 +10,7 @@
       <span class="rectangle small" *ngIf="this.boxValue[i] == 'X'"></span
     ></span>
   </div>
+</div>
   <div class="circle" *ngIf="this.showCircle"></div>
   <div class="rectangle" *ngIf="this.showRectangle"></div>
 </div>

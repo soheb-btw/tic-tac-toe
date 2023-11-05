@@ -42,16 +42,14 @@ body{
 
 
 .disabled {
-    pointer-events: none; /* Disable mouse events */
-    color: red !important;
-    opacity: 0.3; /* Optionally reduce opacity to indicate the element is disabled */
-    /* Add any other styles to indicate it's disabled */
+    pointer-events: none;
+    opacity: 0.3;
   }
 
 .center-grid{
     display: flex;
     justify-content: center ;
     align-items: center;
-    margin-top: 100px;
+    margin-top: 50px;
     justify-content: space-evenly;
 }

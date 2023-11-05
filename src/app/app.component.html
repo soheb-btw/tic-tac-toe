@@ -3,7 +3,6 @@
         <div id="timer" class="timer">{{ remainingTime }}</div>
         <div class="player">Player One</div>
     </div> -->
-    test
     <dialog open class="dialog" *ngIf="gameOver">{{currentPlayer == 1 ? 'Player One' : 'Player Two'}} has won the game.
     </dialog>
     <div class="main" [class.disabled]="gameOver">

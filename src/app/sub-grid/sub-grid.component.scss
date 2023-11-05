@@ -1,11 +1,15 @@
 .main-section{
-    // border: 5px solid black;
-    width: 200px;
-    display: grid;
-    height: 200px;
-    margin: auto;
+    padding: 10px;
+    background-color: rgba(231, 116, 231, 0.938);
     position: relative;
+}
+
+.box-wrapper{
     grid-template-columns: repeat(3, 1fr);
+    display: grid;
+    width: 160px;
+    height: 160px;
+
 }
 
 .box:hover {
@@ -13,14 +17,63 @@
   }
 
 .small{
-    height: 25px !important;
-    width: 25px !important;
+    height: 20px !important;
+    width: 20px !important;
+    border: 3px solid !important;
 }
 
+#box-0{
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+#box-1{
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+#box-2{
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+}
+
+#box-3{
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-right: 1px solid;
+}
+
+#box-4{
+    border: 1px solid;
+}
+
+#box-5{
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+}
+
+#box-6{
+    border-top: 1px solid;
+    border-top: 1px solid;
+    border-right: 1px solid;
+}
+
+#box-7{
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+#box-8{
+    border-top: 1px solid;
+    border-left: 1px solid;
+}
 
 .box{
-    // border: 1px solid grey;
-    background-color: rgba(231, 116, 231, 0.938);
+    // border-right: 1px solid grey;
+    // background-color: rgba(231, 116, 231, 0.938);
     display: flex;
     max-width: 100px;
     max-height: 100px;
@@ -38,13 +91,16 @@
   height: 150px;
   border: 5px solid black;
   border-radius: 50%;
-//   background-color: white;
-//   box-shadow: 0 0 0 10px blue;
+}
+
+.rectangle-fill{
+    height: 220px;
+    width: 220px;
 }
 
 .rectangle{
-    width: 100px; /* Set the desired width for the rectangle */
-    height: 100px; /* Set the desired height for the rectangle */
+    width: 100px; 
+    height: 100px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -56,3 +112,10 @@
     margin: auto;
 }
 
+@media screen and (max-device-width: 439px) {
+    /* Your CSS styles for iOS devices go here */
+    .main-section{
+        width: 120px;
+        height: 150px;
+    }
+  }
