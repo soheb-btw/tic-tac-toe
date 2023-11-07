@@ -6,11 +6,11 @@
     (click)="boxClicked(i)"
   >
     <span style="position: absolute"
-      ><span class="circle small" *ngIf="this.boxValue[i] == 'O'"></span>
-      <span class="rectangle small" *ngIf="this.boxValue[i] == 'X'"></span
+      ><span class="small" *ngIf="this.boxValue[i] == 'O'">⭕️</span>
+      <span class="small" *ngIf="this.boxValue[i] == 'X'">❌</span
     ></span>
   </div>
 </div>
-  <div class="circle" *ngIf="this.showCircle"></div>
-  <div class="rectangle" *ngIf="this.showRectangle"></div>
+  <div class="circle" *ngIf="this.showCircle">⭕️</div>
+  <div class="rectangle" *ngIf="this.showRectangle">❌</div>
 </div>
