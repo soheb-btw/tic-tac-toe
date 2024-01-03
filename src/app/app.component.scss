@@ -6,6 +6,7 @@
 
 body{
     background-color: #DE8F6E;
+    margin: 0 !important;
 }
 
 .player{
@@ -50,6 +51,7 @@ body{
     display: flex;
     justify-content: center ;
     align-items: center;
+    background-color: rgb(92, 111, 128);
     min-height: 100vh;
     justify-content: space-evenly;
 }

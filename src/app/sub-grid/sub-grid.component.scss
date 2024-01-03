@@ -1,6 +1,6 @@
 .main-section{
     padding: 10px;
-    background-color: rgba(231, 116, 231, 0.938);
+    background-color: black;
     position: relative;
 }
 
@@ -24,56 +24,56 @@
 }
 
 #box-0{
-    border-right: 1px solid;
-    border-bottom: 1px solid;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 #box-1{
-    border-bottom: 1px solid;
-    border-left: 1px solid;
-    border-right: 1px solid;
+    border-bottom: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
 }
 
 #box-2{
-    border-left: 1px solid;
-    border-bottom: 1px solid;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 #box-3{
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    border-right: 1px solid;
+    border-bottom: 1px solid white;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
 }
 
 #box-4{
-    border: 1px solid;
+    border: 1px solid white;
 }
 
 #box-5{
-    border-bottom: 1px solid;
-    border-left: 1px solid;
-    border-top: 1px solid;
+    border-bottom: 1px solid white;
+    border-left: 1px solid white;
+    border-top: 1px solid white;
 }
 
 #box-6{
-    border-top: 1px solid;
-    border-top: 1px solid;
-    border-right: 1px solid;
+    border-top: 1px solid white;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
 }
 
 #box-7{
-    border-top: 1px solid;
-    border-left: 1px solid;
-    border-right: 1px solid;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
 }
 
 #box-8{
-    border-top: 1px solid;
-    border-left: 1px solid;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
 }
 
 .box{
-    // border-right: 1px solid grey;
+    // border-right: 1px solid white grey;
     // background-color: rgba(231, 116, 231, 0.938);
     display: flex;
     max-width: 100px;
