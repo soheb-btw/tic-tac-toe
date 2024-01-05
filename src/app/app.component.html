@@ -1,20 +1,31 @@
 <div class="center-grid">
-    <!-- <div>
+  <div class="guide-wrapper">
+    <span class="guide-text">Player One: ⭕️</span>
+    <button class="guide-button" type="button">How To Play</button>
+    <span class="guide-text">Player Two: ❌</span>
+    <span class="guide-text"> | Current Player: {{currentPlayer == 0 ? '⭕️' : '❌'}}</span>
+  </div>
+  <!-- <div>
         <div id="timer" class="timer">{{ remainingTime }}</div>
         <div class="player">Player One</div>
     </div> -->
-    <dialog open class="dialog" *ngIf="gameOver">{{currentPlayer == 1 ? 'Player One' : 'Player Two'}} has won the game.
-    </dialog>
-    <div class="main" [class.disabled]="gameOver">
-        <app-sub-grid *ngFor="let value of iterateNineTimes(); index as i" (subGridData)="subGridData($event,i)"
-            [currentPlayer]="currentPlayer" [class.disabled]="disabledGrid(i)"></app-sub-grid>
-    </div>
-    <!-- <div>
+  <dialog open class="dialog" *ngIf="gameOver">
+    {{ currentPlayer == 1 ? "Player One" : "Player Two" }} has won the game.
+  </dialog>
+  <div class="main" [class.disabled]="gameOver">
+    <app-sub-grid
+      *ngFor="let value of iterateNineTimes(); index as i"
+      (subGridData)="subGridData($event, i)"
+      [currentPlayer]="currentPlayer"
+      [class.disabled]="disabledGrid(i)"
+    ></app-sub-grid>
+  </div>
+  <!-- <div>
         <div id="timer" class="timer">{{ remainingTime }}</div>
         <div class="player">Player Two</div>
         <button (click)="startTimer()" [disabled]="timerRunning">Start</button>
     </div> -->
-    <!-- <audio controls>
+  <!-- <audio controls>
         <source src="assets/song.mp3" type="audio/mpeg">
       </audio> -->
 </div>
