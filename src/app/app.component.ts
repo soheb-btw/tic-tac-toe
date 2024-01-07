@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogContentComponent } from './dialog-content/dialog-content.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +20,8 @@ export class AppComponent {
   remainingTime: number = 7;
   timerRunning: boolean = false;
   timer: any;
+
+  constructor(public dialog: MatDialog) {}
 
   startTimer() {
     if (!this.timerRunning) {
@@ -88,6 +92,7 @@ export class AppComponent {
       }
     }
 
+
     // Check columns
     for (let i = 0; i < 3; i++) {
       if (
@@ -120,5 +125,9 @@ export class AppComponent {
 
   currentPlayerEmit(currentPlayer: number) {
     this.currentPlayer = currentPlayer === 0 ? 1 : 0;
+  }
+
+  openDialog(): void {
+    this.dialog.open(DialogContentComponent);
   }
 }

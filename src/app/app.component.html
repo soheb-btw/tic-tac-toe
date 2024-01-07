@@ -1,7 +1,7 @@
 <div class="center-grid">
   <div class="guide-wrapper">
     <span class="guide-text">Player One: ⭕️</span>
-    <button class="guide-button" type="button">How To Play</button>
+    <button class="guide-button" type="button" (click)="openDialog()">How To Play</button>
     <span class="guide-text">Player Two: ❌</span>
     <span class="guide-text"> | Current Player: {{currentPlayer == 0 ? '⭕️' : '❌'}}</span>
   </div>

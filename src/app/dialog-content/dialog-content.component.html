@@ -1,0 +1,79 @@
+<div style="display: flex;">
+    <h1 mat-dialog-title>How To Play</h1>
+    <button style="margin-left: auto;margin-top: 10px;margin-right: 20px;" mat-icon-button mat-dialog-close class="close-button" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<mat-dialog-content class="mat-typography">
+    <h1>Tic Tac Toe 2.0</h1>
+
+    <h2>Objective:</h2>
+    <p>
+        Achieve Tic Tac Toe within the larger grid by winning mini Tic Tac Toe
+        games.
+    </p>
+
+    <h1><u>Game Rules</u></h1>
+    <h2>Grid Structure:</h2>
+    <p>
+        The game consists of a 3x3 grid, where each cell contains another 3x3 mini
+        Tic Tac Toe grid.
+    </p>
+
+    <h2>Initial Player:</h2>
+    <p>Player 1 starts the game.</p>
+
+    <h2>Making Moves:</h2>
+    <p>
+        Players take turns to make a move by clicking on an empty cell in the mini
+        Tic Tac Toe grid. The first player marks "X," and the second player marks
+        "O."
+    </p>
+
+    <h2>Navigation:</h2>
+    <p>
+        After each move, the next player must select a cell in the mini grid
+        corresponding to the cell clicked by the previous player. Example: If Player
+        1 clicks the top-middle cell in a mini grid, Player 2 must make their move
+        in the top-middle cell of the corresponding larger grid.
+    </p>
+
+    <h2>Winning a Mini Grid:</h2>
+    <p>
+        When a player achieves Tic Tac Toe within a mini grid, that mini grid is
+        won. The corresponding cell in the larger grid is marked with the winning
+        player's symbol ("X" or "O"). The won mini grid becomes disabled, and
+        players cannot make moves in it.
+    </p>
+
+    <h2>Navigating Through Won Grids:</h2>
+    <p>
+        If a player's turn corresponds to a won mini grid or a disabled cell in the
+        larger grid, they can make their move in any available cell of the larger
+        grid.
+    </p>
+
+    <h2>Winning the Game:</h2>
+    <p>
+        To win the entire game, a player must achieve Tic Tac Toe within the larger
+        3x3 grid.
+    </p>
+
+    <h2>Game End:</h2>
+    <p>
+        The game ends when a player wins the larger grid or when there are no more
+        valid moves left.
+    </p>
+
+    <h2>Tips:</h2>
+    <p>
+        Think strategically to block your opponent and plan ahead to win the larger
+        grid. Pay attention to won mini grids to make strategic moves in the larger
+        grid.
+    </p>
+
+    <p>Have Fun Playing Tic Tac Toe 2.0!</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
