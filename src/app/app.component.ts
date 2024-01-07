@@ -42,7 +42,6 @@ export class AppComponent {
   }
 
   navigateToSubGrid(position: number) {
-    console.log(position);
     this.indexAfterClicked = position;
     if (this.mainBoxValue[this.indexAfterClicked] != '')
       this.disableWonGrid = true;
