@@ -1,9 +1,11 @@
 <div class="center-grid">
   <div class="guide-wrapper">
-    <span class="guide-text">Player One: ⭕️</span>
-    <button class="guide-button" type="button" (click)="openDialog()">How To Play</button>
+    <span class="guide-text">Player One: ⭕️&nbsp;</span>
     <span class="guide-text">Player Two: ❌</span>
-    <span class="guide-text"> | Current Player: {{currentPlayer == 0 ? '⭕️' : '❌'}}</span>
+    <div class="divider"></div>
+    <button class="guide-button" type="button" (click)="openDialog()">How To Play</button>
+    <div class="divider"></div>
+    <span class="guide-text">Current Player: {{currentPlayer == 0 ? '⭕️' : '❌'}}</span>
   </div>
   <!-- <div>
         <div id="timer" class="timer">{{ remainingTime }}</div>
