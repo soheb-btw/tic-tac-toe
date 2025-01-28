@@ -1,113 +1,153 @@
+// Variables for responsive breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+
 .main-section{
-    padding: 10px;
-    // background-color: black;
-    position: relative;
+    padding: clamp(5px, 2vw, 10px);
 }
 
 .box-wrapper{
     grid-template-columns: repeat(3, 1fr);
     display: grid;
-    width: 200px;
-    height: 200px;
-
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    gap: clamp(2px, 1vw, 4px);
 }
 
 .box:hover {
-    background-color: white;
-    opacity: 0.5;
-  }
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
 
 .small{
-    // height: 20px !important;
-    // width: 20px !important;
-    // border: 3px solid !important;
-    font-size: 30px;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+// Refined border styles with responsive border width
+@mixin responsive-border {
+    border-color: rgba(255, 255, 255, 0.6);
+    border-width: clamp(1px, 0.2vw, 2px);
+    border-style: solid;
 }
 
 #box-0{
-    border-right: 1px solid white;
-    border-bottom: 1px solid white;
+    @include responsive-border;
+    border-left: none;
+    border-top: none;
 }
 
 #box-1{
-    border-bottom: 1px solid white;
-    border-left: 1px solid white;
-    border-right: 1px solid white;
+    @include responsive-border;
+    border-top: none;
 }
 
 #box-2{
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
+    @include responsive-border;
+    border-right: none;
+    border-top: none;
 }
 
 #box-3{
-    border-bottom: 1px solid white;
-    border-top: 1px solid white;
-    border-right: 1px solid white;
+    @include responsive-border;
+    border-left: none;
 }
 
 #box-4{
-    border: 1px solid white;
+    @include responsive-border;
 }
 
 #box-5{
-    border-bottom: 1px solid white;
-    border-left: 1px solid white;
-    border-top: 1px solid white;
+    @include responsive-border;
+    border-right: none;
 }
 
 #box-6{
-    border-top: 1px solid white;
-    border-top: 1px solid white;
-    border-right: 1px solid white;
+    @include responsive-border;
+    border-left: none;
+    border-bottom: none;
 }
 
 #box-7{
-    border-top: 1px solid white;
-    border-left: 1px solid white;
-    border-right: 1px solid white;
+    @include responsive-border;
+    border-bottom: none;
 }
 
 #box-8{
-    border-top: 1px solid white;
-    border-left: 1px solid white;
+    @include responsive-border;
+    border-right: none;
+    border-bottom: none;
 }
 
 .box{
-    // border-right: 1px solid white grey;
-    // background-color: rgba(231, 116, 231, 0.938);
     display: flex;
-    max-width: 100px;
-    max-height: 100px;
+    aspect-ratio: 1;
     justify-content: center;
     align-items: center;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    transition: all 0.3s ease;
 }
 
-
-.circle {
+.circle, .rectangle {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 120px;
-}
-
-.rectangle{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 120px;
+    font-size: clamp(3rem, 8vw, 6rem);
+    opacity: 0;
+    animation: fadeIn 0.3s ease-out forwards;
 }
 
 .box-content{
     margin: auto;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    opacity: 0;
+    animation: fadeIn 0.3s ease-out forwards;
 }
 
-// @media screen and (max-device-width: 439px) {
-//     /* Your CSS styles for iOS devices go here */
-//     .main-section{
-//         width: 120px;
-//         height: 150px;
-//     }
-//   }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+// Media queries for specific adjustments
+@media (max-width: $mobile) {
+    .main-section {
+        padding: 3px;
+    }
+
+    .box-wrapper {
+        gap: 1px;
+    }
+
+    .box {
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+    }
+}
+
+@media (max-width: $tablet) {
+    .circle, .rectangle {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+    }
+}
+
+// Add touch device optimizations
+@media (hover: none) {
+    .box:hover {
+        background-color: transparent;
+    }
+
+    .box:active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
