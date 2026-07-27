@@ -10,12 +10,15 @@ import { DialogContentComponent } from './dialog-content/dialog-content.componen
 export class AppComponent {
   title = 'tic-tac-toe';
   indexAfterClicked: number = -1;
+  hoveredTargetGrid: number = -1;
   currentPlayer: number = 0;
-  winOrLoss: boolean = false;
   gameOver: boolean = false;
-  gridObject: any;
-  disableWonGrid: boolean = false;
+  winnerMessage: string = '';
   mainBoxValue: string[] = new Array(9).fill('');
+  subGridCompleted: boolean[] = new Array(9).fill(false);
+
+  playerOneScore: number = 0;
+  playerTwoScore: number = 0;
 
   remainingTime: number = 7;
   timerRunning: boolean = false;
@@ -23,60 +26,121 @@ export class AppComponent {
 
   constructor(public dialog: MatDialog) {}
 
-  startTimer() {
-    if (!this.timerRunning) {
-      this.timerRunning = true;
-      this.timer = setInterval(() => {
-        this.remainingTime--;
+  ngOnInit() {
+    this.startTimer();
+  }
 
-        if (this.remainingTime <= 0) {
-          this.stopTimer();
-        }
-      }, 1000);
-    }
+  ngOnDestroy() {
+    this.stopTimer();
+  }
+
+  get timerProgressOffset(): number {
+    // Circle radius = 22, circumference = 2 * PI * 22 ≈ 138.2
+    const totalCircumference = 138.2;
+    return totalCircumference - (this.remainingTime / 7) * totalCircumference;
+  }
+
+  startTimer() {
+    if (this.gameOver) return;
+    this.stopTimer();
+    this.timerRunning = true;
+    this.timer = setInterval(() => {
+      this.remainingTime--;
+      if (this.remainingTime <= 0) {
+        this.handleTimeout();
+      }
+    }, 1000);
   }
 
   stopTimer() {
-    clearInterval(this.timer);
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
     this.timerRunning = false;
+  }
+
+  resetTimer() {
+    this.remainingTime = 7;
+    this.startTimer();
+  }
+
+  handleTimeout() {
+    if (this.gameOver) return;
+    this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
+    this.resetTimer();
   }
 
   navigateToSubGrid(position: number) {
     this.indexAfterClicked = position;
-    if (this.mainBoxValue[this.indexAfterClicked] != '')
-      this.disableWonGrid = true;
-    else this.disableWonGrid = false;
   }
 
-  disabledGrid(i: number) {
-    if (this.mainBoxValue[this.indexAfterClicked] != '') {
-      if (this.mainBoxValue[i] == '') return false;
-      return true;
+  onCellHover(targetGridIndex: number) {
+    this.hoveredTargetGrid = targetGridIndex;
+  }
+
+  disabledGrid(i: number): boolean {
+    if (this.gameOver) return true;
+    if (this.subGridCompleted[i] || this.mainBoxValue[i] !== '') return true;
+
+    if (
+      this.indexAfterClicked === -1 ||
+      this.subGridCompleted[this.indexAfterClicked] ||
+      this.mainBoxValue[this.indexAfterClicked] !== ''
+    ) {
+      return false;
     }
-    if (this.indexAfterClicked != i && this.indexAfterClicked != -1)
-      return true;
-    return false;
+
+    return i !== this.indexAfterClicked;
   }
 
-  subGridData(subGridData: any,i: number) {
-    this.gridObject = subGridData;
-    this.currentPlayerEmit(subGridData.currentPlayer);
-    this.checkForSubGridWin(subGridData.checkForWin,i);
-    this.navigateToSubGrid(subGridData.position);
+  isFreeMove(): boolean {
+    return (
+      this.indexAfterClicked === -1 ||
+      this.subGridCompleted[this.indexAfterClicked] ||
+      this.mainBoxValue[this.indexAfterClicked] !== ''
+    );
+  }
+
+  subGridData(subGridData: any, i: number) {
+    if (this.gameOver) return;
+
+    this.hoveredTargetGrid = -1;
+    const playerWhoMoved = subGridData.currentPlayer;
+
     if (subGridData.checkForWin) {
-      const mainGameWin = this.checkForWin();
-      if (mainGameWin) {
-        this.gameOver = true;
+      this.mainBoxValue[i] = playerWhoMoved === 0 ? 'O' : 'X';
+      this.subGridCompleted[i] = true;
+    } else if (subGridData.isFull) {
+      if (this.mainBoxValue[i] === '') {
+        this.mainBoxValue[i] = 'TIE';
       }
+      this.subGridCompleted[i] = true;
     }
-  }
 
-  checkForSubGridWin(winOrLoss: any,i : number) {
-    this.winOrLoss = winOrLoss;
-    if (this.indexAfterClicked != -1 && winOrLoss) {
-      this.mainBoxValue[i] =
-        this.currentPlayer == 0 ? 'O' : 'X';
+    if (this.checkForWin()) {
+      this.gameOver = true;
+      this.stopTimer();
+      if (playerWhoMoved === 0) {
+        this.playerOneScore++;
+        this.winnerMessage = 'Player One (⭕) Has Won The Game!';
+      } else {
+        this.playerTwoScore++;
+        this.winnerMessage = 'Player Two (❌) Has Won The Game!';
+      }
+      return;
     }
+
+    if (this.checkForDraw()) {
+      this.gameOver = true;
+      this.stopTimer();
+      this.winnerMessage = 'Game ended in a Draw!';
+      return;
+    }
+
+    this.navigateToSubGrid(subGridData.position);
+    this.currentPlayer = playerWhoMoved === 0 ? 1 : 0;
+    this.resetTimer();
   }
 
   checkForWin(): boolean {
@@ -84,6 +148,7 @@ export class AppComponent {
     for (let i = 0; i < 9; i += 3) {
       if (
         this.mainBoxValue[i] !== '' &&
+        this.mainBoxValue[i] !== 'TIE' &&
         this.mainBoxValue[i] === this.mainBoxValue[i + 1] &&
         this.mainBoxValue[i] === this.mainBoxValue[i + 2]
       ) {
@@ -91,11 +156,11 @@ export class AppComponent {
       }
     }
 
-
     // Check columns
     for (let i = 0; i < 3; i++) {
       if (
         this.mainBoxValue[i] !== '' &&
+        this.mainBoxValue[i] !== 'TIE' &&
         this.mainBoxValue[i] === this.mainBoxValue[i + 3] &&
         this.mainBoxValue[i] === this.mainBoxValue[i + 6]
       ) {
@@ -105,25 +170,46 @@ export class AppComponent {
 
     // Check diagonals
     if (
-      (this.mainBoxValue[0] !== '' &&
-        this.mainBoxValue[0] === this.mainBoxValue[4] &&
-        this.mainBoxValue[0] === this.mainBoxValue[8]) ||
-      (this.mainBoxValue[2] !== '' &&
-        this.mainBoxValue[2] === this.mainBoxValue[4] &&
-        this.mainBoxValue[2] === this.mainBoxValue[6])
+      this.mainBoxValue[0] !== '' &&
+      this.mainBoxValue[0] !== 'TIE' &&
+      this.mainBoxValue[0] === this.mainBoxValue[4] &&
+      this.mainBoxValue[0] === this.mainBoxValue[8]
     ) {
       return true;
     }
 
-    return false; // No win
+    if (
+      this.mainBoxValue[2] !== '' &&
+      this.mainBoxValue[2] !== 'TIE' &&
+      this.mainBoxValue[2] === this.mainBoxValue[4] &&
+      this.mainBoxValue[2] === this.mainBoxValue[6]
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  checkForDraw(): boolean {
+    return (
+      this.subGridCompleted.every((completed) => completed) ||
+      this.mainBoxValue.every((val) => val !== '')
+    );
+  }
+
+  resetGame() {
+    this.indexAfterClicked = -1;
+    this.hoveredTargetGrid = -1;
+    this.currentPlayer = 0;
+    this.gameOver = false;
+    this.winnerMessage = '';
+    this.mainBoxValue = new Array(9).fill('');
+    this.subGridCompleted = new Array(9).fill(false);
+    this.resetTimer();
   }
 
   iterateNineTimes(): number[] {
     return new Array(9);
-  }
-
-  currentPlayerEmit(currentPlayer: number) {
-    this.currentPlayer = currentPlayer === 0 ? 1 : 0;
   }
 
   openDialog(): void {
