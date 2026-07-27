@@ -1,21 +1,103 @@
-<div class="center-grid">
-  <div class="guide-wrapper">
-    <span class="guide-text">Player One: ⭕️&nbsp;</span>
-    <span class="guide-text">Player Two: ❌</span>
-    <div class="divider"></div>
-    <button class="guide-button" type="button" (click)="openDialog()">How To Play</button>
-    <div class="divider"></div>
-    <span class="guide-text">Current Player: {{currentPlayer == 0 ? '⭕️' : '❌'}}</span>
+<div class="app-layout">
+  <!-- Top Navigation & Dashboard Header -->
+  <header class="dashboard-header">
+    <div class="brand-title">
+      <span class="title-text">ULTIMATE</span>
+      <span class="title-sub">TIC TAC TOE</span>
+    </div>
+
+    <div class="scoreboard-container">
+      <!-- Player One Card -->
+      <div class="player-card player-one" [class.is-turn]="currentPlayer === 0 && !gameOver">
+        <div class="player-avatar">
+          <svg viewBox="0 0 50 50" class="avatar-svg symbol-o">
+            <circle cx="25" cy="25" r="18" stroke="currentColor" stroke-width="6" fill="none" />
+          </svg>
+        </div>
+        <div class="player-info">
+          <span class="player-name">Player 1</span>
+          <span class="player-score">{{ playerOneScore }} WINS</span>
+        </div>
+      </div>
+
+      <!-- Circular SVG Timer -->
+      <div class="timer-widget">
+        <svg class="timer-svg" viewBox="0 0 50 50">
+          <circle class="timer-bg" cx="25" cy="25" r="22" />
+          <circle
+            class="timer-bar"
+            [class.timer-warning]="remainingTime <= 3"
+            cx="25"
+            cy="25"
+            r="22"
+            [style.strokeDashoffset]="timerProgressOffset"
+          />
+        </svg>
+        <span class="timer-text" [class.text-warning]="remainingTime <= 3">{{ remainingTime }}s</span>
+      </div>
+
+      <!-- Player Two Card -->
+      <div class="player-card player-two" [class.is-turn]="currentPlayer === 1 && !gameOver">
+        <div class="player-info align-right">
+          <span class="player-name">Player 2</span>
+          <span class="player-score">{{ playerTwoScore }} WINS</span>
+        </div>
+        <div class="player-avatar">
+          <svg viewBox="0 0 50 50" class="avatar-svg symbol-x">
+            <line x1="12" y1="12" x2="38" y2="38" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+            <line x1="38" y1="12" x2="12" y2="38" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button class="action-btn help-btn" type="button" (click)="openDialog()">
+        <span class="material-icons">help_outline</span>
+        Rules
+      </button>
+      <button class="action-btn restart-btn" type="button" (click)="resetGame()">
+        <span class="material-icons">restart_alt</span>
+        Reset
+      </button>
+    </div>
+  </header>
+
+  <!-- Live Guidance Banner -->
+  <div class="status-banner" [class.banner-free]="isFreeMove()" [class.banner-active]="!isFreeMove()">
+    <span *ngIf="isFreeMove()" class="status-text">
+      ⚡ <strong>FREE MOVE:</strong> Play inside any available grid!
+    </span>
+    <span *ngIf="!isFreeMove()" class="status-text">
+      🎯 <strong>TARGET GRID:</strong> Play inside <strong>Grid #{{ indexAfterClicked + 1 }}</strong>
+    </span>
   </div>
-  <dialog open class="dialog" *ngIf="gameOver">
-    {{ currentPlayer == 1 ? "Player One" : "Player Two" }} has won the game.
-  </dialog>
-  <div class="main" [class.disabled]="gameOver">
-    <app-sub-grid
-      *ngFor="let value of iterateNineTimes(); index as i"
-      (subGridData)="subGridData($event, i)"
-      [currentPlayer]="currentPlayer"
-      [class.disabled]="disabledGrid(i)"
-    ></app-sub-grid>
+
+  <!-- Main Game Board -->
+  <main class="game-board-wrapper" [class.board-disabled]="gameOver">
+    <div class="main-grid">
+      <app-sub-grid
+        *ngFor="let value of iterateNineTimes(); index as i"
+        (subGridData)="subGridData($event, i)"
+        (cellHover)="onCellHover($event)"
+        [currentPlayer]="currentPlayer"
+        [disabled]="disabledGrid(i)"
+        [previewTarget]="hoveredTargetGrid === i"
+        [class.is-active-target]="!disabledGrid(i) && !subGridCompleted[i]"
+      ></app-sub-grid>
+    </div>
+  </main>
+
+  <!-- Victory / Game Over Glass Dialog -->
+  <div class="victory-backdrop" *ngIf="gameOver">
+    <div class="victory-modal">
+      <div class="trophy-icon">🏆</div>
+      <h2 class="victory-title">{{ winnerMessage }}</h2>
+      <p class="victory-desc">Great match! Click below to start the next round.</p>
+      <button class="play-again-btn" type="button" (click)="resetGame()">
+        Play Next Round
+      </button>
+    </div>
   </div>
 </div>
