@@ -1,16 +1,37 @@
-<div class="main-section">
+<div class="sub-grid-container" [class.is-preview-target]="previewTarget" [class.is-disabled]="disabled">
   <div class="box-wrapper">
-  <div
-    class="box" [attr.id]="'box-' + i"
-    *ngFor="let value of boxValue; index as i"
-    (click)="boxClicked(i)"
-  >
-    <span style="position: absolute"
-      ><span class="small" *ngIf="this.boxValue[i] == 'O'">⭕️</span>
-      <span class="small" *ngIf="this.boxValue[i] == 'X'">❌</span
-    ></span>
+    <div
+      class="box"
+      [attr.id]="'box-' + i"
+      *ngFor="let value of boxValue; index as i"
+      (click)="boxClicked(i)"
+      (mouseenter)="onCellHover(i)"
+      (mouseleave)="onCellLeave()"
+      [class.box-empty]="boxValue[i] === ''"
+    >
+      <!-- Neon SVG Symbol for O -->
+      <svg *ngIf="boxValue[i] === 'O'" class="symbol-svg symbol-o" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="18" stroke="currentColor" stroke-width="6" fill="none" />
+      </svg>
+
+      <!-- Neon SVG Symbol for X -->
+      <svg *ngIf="boxValue[i] === 'X'" class="symbol-svg symbol-x" viewBox="0 0 50 50">
+        <line x1="12" y1="12" x2="38" y2="38" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+        <line x1="38" y1="12" x2="12" y2="38" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+      </svg>
+    </div>
   </div>
-</div>
-  <div class="circle" *ngIf="this.showCircle">⭕️</div>
-  <div class="rectangle" *ngIf="this.showRectangle">❌</div>
+
+  <!-- Sub-Grid Victory Overlay -->
+  <div class="won-overlay circle-won" *ngIf="showCircle">
+    <svg class="won-svg symbol-o" viewBox="0 0 80 80">
+      <circle cx="40" cy="40" r="30" stroke="currentColor" stroke-width="10" fill="none" />
+    </svg>
+  </div>
+  <div class="won-overlay rectangle-won" *ngIf="showRectangle">
+    <svg class="won-svg symbol-x" viewBox="0 0 80 80">
+      <line x1="20" y1="20" x2="60" y2="60" stroke="currentColor" stroke-width="10" stroke-linecap="round" />
+      <line x1="60" y1="20" x2="20" y2="60" stroke="currentColor" stroke-width="10" stroke-linecap="round" />
+    </svg>
+  </div>
 </div>
