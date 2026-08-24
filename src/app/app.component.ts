@@ -13,6 +13,7 @@ export class AppComponent {
   hoveredTargetGrid: number = -1;
   currentPlayer: number = 0;
   gameOver: boolean = false;
+  gameStarted: boolean = false;
   winnerMessage: string = '';
   mainBoxValue: string[] = new Array(9).fill('');
   subGridCompleted: boolean[] = new Array(9).fill(false);
@@ -20,14 +21,15 @@ export class AppComponent {
   playerOneScore: number = 0;
   playerTwoScore: number = 0;
 
-  remainingTime: number = 7;
+  remainingTime: number = 30;
   timerRunning: boolean = false;
+  gamePaused: boolean = false;
   timer: any;
 
   constructor(public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.startTimer();
+    // Timer will start when the game is started via startGame()
   }
 
   ngOnDestroy() {
@@ -37,11 +39,11 @@ export class AppComponent {
   get timerProgressOffset(): number {
     // Circle radius = 22, circumference = 2 * PI * 22 ≈ 138.2
     const totalCircumference = 138.2;
-    return totalCircumference - (this.remainingTime / 7) * totalCircumference;
+    return totalCircumference - (this.remainingTime / 30) * totalCircumference;
   }
 
   startTimer() {
-    if (this.gameOver) return;
+    if (this.gameOver || !this.gameStarted) return;
     this.stopTimer();
     this.timerRunning = true;
     this.timer = setInterval(() => {
@@ -61,8 +63,19 @@ export class AppComponent {
   }
 
   resetTimer() {
-    this.remainingTime = 7;
+    this.remainingTime = 30;
     this.startTimer();
+  }
+
+  togglePause() {
+    if (this.gameOver || !this.gameStarted) return;
+    if (this.gamePaused) {
+      this.gamePaused = false;
+      this.startTimer();
+    } else {
+      this.gamePaused = true;
+      this.stopTimer();
+    }
   }
 
   handleTimeout() {
@@ -205,7 +218,15 @@ export class AppComponent {
     this.winnerMessage = '';
     this.mainBoxValue = new Array(9).fill('');
     this.subGridCompleted = new Array(9).fill(false);
-    this.resetTimer();
+    if (this.gameStarted) {
+      this.resetTimer();
+    }
+  }
+
+  startGame() {
+    this.gameStarted = true;
+    this.resetGame();
+    this.openDialog();
   }
 
   iterateNineTimes(): number[] {
@@ -213,6 +234,17 @@ export class AppComponent {
   }
 
   openDialog(): void {
-    this.dialog.open(DialogContentComponent);
+    const wasRunning = !this.gamePaused && this.gameStarted && !this.gameOver;
+    if (wasRunning) {
+      this.togglePause();
+    }
+    
+    const dialogRef = this.dialog.open(DialogContentComponent);
+    
+    dialogRef.afterClosed().subscribe(() => {
+      if (wasRunning && this.gamePaused && !this.gameOver) {
+        this.togglePause();
+      }
+    });
   }
 }
